@@ -1,26 +1,14 @@
 import React, { useReducer } from 'react';
+import { initialState, reducer } from '../state/formReducer';
 
 const Form = () => {
 
-    const initialState = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        gender: "",
-        education: "",
-        quantity: 0,
-        feedback: "",
-        term: false,
-    };
-
-    const reducer = (state, action) => {
-        
-    }
-
-    const [state, dispatch] = useReducer(reducer, initialState)
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
+
+        console.log(state);
     }
 
     return (
@@ -36,7 +24,13 @@ const Form = () => {
                         type='text'
                         name='firstName'
                         id='firstName'
-
+                        required
+                        onBlur={(e) =>
+                            dispatch({
+                                type: 'INPUT',
+                                payload: { name: e.target.name, value: e.target.value }
+                            })
+                        }
                     />
                 </div>
                 <div className='flex flex-col w-full max-w-xs'>
@@ -48,7 +42,13 @@ const Form = () => {
                         type='text'
                         name='lastName'
                         id='lastName'
-
+                        required
+                        onBlur={(e) =>
+                            dispatch({
+                                type: 'INPUT',
+                                payload: { name: e.target.name, value: e.target.value }
+                            })
+                        }
                     />
                 </div>
                 <div className='flex flex-col w-full max-w-xs'>
@@ -60,7 +60,13 @@ const Form = () => {
                         type='email'
                         name='email'
                         id='email'
-
+                        required
+                        onBlur={(e) =>
+                            dispatch({
+                                type: 'INPUT',
+                                payload: { name: e.target.name, value: e.target.value }
+                            })
+                        }
                     />
                 </div>
                 <div className='flex flex-col w-full max-w-xs'>
@@ -72,9 +78,14 @@ const Form = () => {
                                 id='male'
                                 name='gender'
                                 value='male'
-
+                                onClick={(e) =>
+                                    dispatch({
+                                        type: 'INPUT',
+                                        payload: { name: e.target.name, value: e.target.value }
+                                    })
+                                }
                             />
-                            <label className='ml-2 text-lg' for='male'>
+                            <label className='ml-2 text-lg' htmlFor='male'>
                                 Male
                             </label>
                         </div>
@@ -84,9 +95,14 @@ const Form = () => {
                                 id='female'
                                 name='gender'
                                 value='female'
-
+                                onClick={(e) =>
+                                    dispatch({
+                                        type: 'INPUT',
+                                        payload: { name: e.target.name, value: e.target.value }
+                                    })
+                                }
                             />
-                            <label className='ml-2 text-lg' for='female'>
+                            <label className='ml-2 text-lg' htmlFor='female'>
                                 Female
                             </label>
                         </div>
@@ -96,23 +112,33 @@ const Form = () => {
                                 id='other'
                                 name='gender'
                                 value='other'
-
+                                onClick={(e) =>
+                                    dispatch({
+                                        type: 'INPUT',
+                                        payload: { name: e.target.name, value: e.target.value }
+                                    })
+                                }
                             />
-                            <label className='ml-2 text-lg' for='other'>
+                            <label className='ml-2 text-lg' htmlFor='other'>
                                 Other
                             </label>
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-col w-full max-w-xs'>
-                    <label className='mb-3' for='education'>
+                    <label className='mb-3' htmlFor='education'>
                         Education
                     </label>
                     <select
                         className='border border-slate-300 rounded-md p-2 focus:outline-none focus:border-indigo-500'
                         name='education'
                         id='education'
-
+                        onChange={(e) =>
+                            dispatch({
+                                type: 'INPUT',
+                                payload: { name: e.target.name, value: e.target.value }
+                            })
+                        }
                     >
                         <option value='SSC'>SSC</option>
                         <option value='HSC'>HSC</option>
@@ -123,19 +149,23 @@ const Form = () => {
                 <div className='flex flex-col w-full max-w-xs'>
                     <label className='mb-3'>Number of PCs</label>
                     <div className='flex justify-between items-center gap-2 '>
-                        <button className='bg-indigo-500 text-lg text-white rounded h-10 w-10 '>
+                        <button
+                            onClick={() => dispatch({ type: 'DECREMENT' })}
+                            className='bg-indigo-500 text-lg text-white rounded h-10 w-10 '>
                             -
                         </button>
                         <div className='border flex-1 flex justify-center items-center h-10 rounded-md border-gray-300'>
-                            <span className='text-lg'>0</span>
+                            <span className='text-lg'>{state.quantity}</span>
                         </div>
-                        <button className='bg-indigo-500 text-lg text-white rounded h-10 w-10'>
+                        <button
+                            onClick={() => dispatch({ type: 'INCREMENT' })}
+                            className='bg-indigo-500 text-lg text-white rounded h-10 w-10'>
                             +
                         </button>
                     </div>
                 </div>
                 <div className='flex flex-col w-full max-w-xs'>
-                    <label className='mb-3' for='feedback'>
+                    <label className='mb-3' htmlFor='feedback'>
                         Feedback
                     </label>
                     <textarea
@@ -144,7 +174,13 @@ const Form = () => {
                         id='feedback'
                         cols='30'
                         rows='4'
-
+                        required
+                        onBlur={(e) =>
+                            dispatch({
+                                type: 'INPUT',
+                                payload: { name: e.target.name, value: e.target.value }
+                            })
+                        }
                     ></textarea>
                 </div>
 
@@ -155,14 +191,14 @@ const Form = () => {
                             type='checkbox'
                             name='term'
                             id='terms'
-
+                            onClick={() => dispatch({ type: 'TOGGLE' })}
                         />
-                        <label for='terms'>I agree to terms and conditions</label>
+                        <label htmlFor='terms'>I agree to terms and conditions</label>
                     </div>
                     <button
                         className=' px-4 py-3 bg-indigo-500 rounded-md font-semibold text-white text-lg disabled:bg-gray-500'
                         type='submit'
-
+                        disabled={!state.term}
                     >
                         Submit
                     </button>
